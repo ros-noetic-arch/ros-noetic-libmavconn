@@ -22,11 +22,12 @@ depends=(${ros_depends[@]}
   console-bridge)
 
 _dir="mavros-${pkgver}/libmavconn"
-source=("${pkgname}-${pkgver}.tar.gz"::"https://github.com/mavlink/mavros/archive/${pkgver}.tar.gz")
-sha256sums=('c7cd33fe3582c427744d251383b0befb0766ab29cd6191a3f29f6a439aa26813')
+source=("${pkgname}-${pkgver}.tar.gz"::"https://github.com/mavlink/mavros/archive/${pkgver}.tar.gz"
+        "https://github.com/mavlink/mavros/pull/1760.patch")
+sha256sums=('c7cd33fe3582c427744d251383b0befb0766ab29cd6191a3f29f6a439aa26813' SKIP)
 
 prepare() {
-  sed -i '11s/Geographic)/GeographicLib)/' ${_dir}/cmake/Modules/FindGeographicLib.cmake
+  patch --directory="${srcdir}/mavros-${pkgver}" --forward --strip=1 --input="${srcdir}/1760.patch"
 }
 
 build() {
